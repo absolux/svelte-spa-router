@@ -37,8 +37,8 @@ export function wrap(component, userData, ...conditions) {
 function getLocation() {
     let location, querystring
 
-    [, location = '/'] = window.location.href.split('#')
-    [location, querystring = ''] = location.split('?')
+    ;[, location = '/'] = window.location.href.split('#')
+    ;[location, querystring = ''] = location.split('?')
 
     return {location, querystring}
 }
