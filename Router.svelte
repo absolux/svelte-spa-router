@@ -35,16 +35,10 @@ export function wrap(component, userData, ...conditions) {
  * @private
  */
 function getLocation() {
-    const hashPosition = window.location.href.indexOf('#/')
-    let location = (hashPosition > -1) ? window.location.href.substr(hashPosition + 1) : '/'
+    let location, querystring
 
-    // Check if there's a querystring
-    const qsPosition = location.indexOf('?')
-    let querystring = ''
-    if (qsPosition > -1) {
-        querystring = location.substr(qsPosition + 1)
-        location = location.substr(0, qsPosition)
-    }
+    [, location = '/'] = window.location.href.split('#')
+    [location, querystring = ''] = location.split('?')
 
     return {location, querystring}
 }
@@ -56,11 +50,12 @@ export const loc = readable(
     null,
     // eslint-disable-next-line prefer-arrow-callback
     function start(set) {
-        set(getLocation())
+        update()
 
-        const update = () => {
+        function update () {
             set(getLocation())
         }
+
         window.addEventListener('hashchange', update, false)
 
         return function stop() {
